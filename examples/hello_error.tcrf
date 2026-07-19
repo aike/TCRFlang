@@ -1,0 +1,14 @@
+import std
+
+R genNumber
+  Void > Int
+  Int 100
+
+F nouse
+  Void > Void
+  genNumber
+  std.printLine
+
+F main
+  Text "Hello, World!"
+  std.printLine

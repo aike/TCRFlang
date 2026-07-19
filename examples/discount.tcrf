@@ -1,0 +1,8 @@
+import std
+import pricing
+
+F main
+  pricing.Price 1000.0
+  pricing.applyDiscount
+  pricing.priceText
+  std.printLine

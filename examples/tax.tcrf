@@ -1,0 +1,30 @@
+import std
+
+T Price [Decimal]
+T TaxRate [Decimal]
+T TaxAmount [Decimal]
+T TotalAmount [Decimal]
+
+C standardTaxRate = TaxRate 0.10
+
+R calculateTotal price
+  Price > TotalAmount
+
+  tax : TaxAmount =
+    price * standardTaxRate
+
+  total : TotalAmount =
+    price + tax
+
+  total
+
+R totalText total
+  TotalAmount > Text
+
+  std.decimal total
+
+F main
+  Price 1000.0
+  calculateTotal
+  totalText
+  std.printLine

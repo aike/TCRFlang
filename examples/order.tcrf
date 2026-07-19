@@ -1,0 +1,25 @@
+import std
+
+T OrderId [Text]
+
+T UnpaidOrder [OrderId]
+T PaidOrder [OrderId]
+T ShippedOrder [OrderId]
+
+R pay order
+  UnpaidOrder => PaidOrder
+
+R ship order
+  PaidOrder => ShippedOrder
+
+R shippedText order
+  ShippedOrder > Text
+
+  Text "Order shipped"
+
+F main
+  UnpaidOrder (OrderId "O001")
+  pay
+  ship
+  shippedText
+  std.printLine

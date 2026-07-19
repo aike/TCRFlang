@@ -1,0 +1,108 @@
+import std
+
+T Limit {
+  value Int
+}
+
+T Candidates {
+  values List<Int>
+}
+
+T Primes {
+  values List<Int>
+}
+
+T FilterInput {
+  divisor Int
+  values  List<Int>
+}
+
+T RangeInput {
+  first Int
+  last  Int
+}
+
+R removeMultiples input
+  FilterInput > List<Int> ! Error
+
+  when std.isEmpty input.values
+    true
+      std.empty<Int>
+
+    false
+      value : Int =
+        std.first input.values
+
+      remaining : List<Int> =
+        std.rest input.values
+
+      filtered : List<Int> =
+        removeMultiples FilterInput {
+          divisor = input.divisor
+          values  = remaining
+        }
+
+      when value % input.divisor == 0
+        true
+          filtered
+
+        false
+          std.prepend value filtered
+
+R sieve candidates
+  Candidates > Primes ! Error
+
+  when std.isEmpty candidates.values
+    true
+      Primes {
+        values = std.empty<Int>
+      }
+
+    false
+      prime : Int =
+        std.first candidates.values
+
+      remaining : List<Int> =
+        std.rest candidates.values
+
+      filtered : List<Int> =
+        removeMultiples FilterInput {
+          divisor = prime
+          values  = remaining
+        }
+
+      restPrimes : Primes =
+        sieve Candidates {
+          values = filtered
+        }
+
+      Primes {
+        values =
+          std.prepend prime restPrimes.values
+      }
+
+R findPrimes limit
+  Limit > Primes ! Error
+
+  values : List<Int> =
+    std.inclusive RangeInput {
+      first = 2
+      last  = limit.value
+    }
+
+  sieve Candidates {
+    values = values
+  }
+
+R primesText primes
+  Primes > Text
+
+  std.intList primes.values
+
+F main
+  Limit {
+    value = 100
+  }
+  findPrimes
+  primesText
+  std.printLine

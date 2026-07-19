@@ -1,0 +1,43 @@
+import std
+
+T Score [Int]
+
+T Grade
+  | Excellent
+  | Passed
+  | Failed
+
+R judge score
+  Score > Grade
+
+  when score >= 80
+    true
+      Excellent
+
+    false
+      when score >= 60
+        true
+          Passed
+
+        false
+          Failed
+
+R gradeText grade
+  Grade > Text
+
+  match grade
+
+    Excellent
+      Text "Excellent"
+
+    Passed
+      Text "Passed"
+
+    Failed
+      Text "Failed"
+
+F main
+  Score 75
+  judge
+  gradeText
+  std.printLine

@@ -1,0 +1,22 @@
+import std
+
+T Price [Decimal]
+T DiscountRate [Decimal]
+
+C memberDiscount = DiscountRate 0.20
+
+R applyDiscount price
+  Price > Price
+
+  discount : Price =
+    price * memberDiscount
+
+  total : Price =
+    price - discount
+
+  total
+
+R priceText price
+  Price > Text
+
+  std.decimal price

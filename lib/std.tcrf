@@ -1,0 +1,199 @@
+# TCRF 標準ライブラリ宣言ファイル (std.tcrf)
+#
+# このファイルは処理系バイナリのあるディレクトリ直下の lib/ に置かれ、
+# `import std` (および std.console などの個別モジュール) の型検査は
+# ここに書かれた型シグネチャに従って行われる。
+#
+# 各 R は「R 名前 引数名...」とシグネチャ行だけを書き、本体を持たない。
+# 処理本体の状態は関数ごとのコメントで示す:
+#   ビルトイン実装 — 処理系組み込みの実装で実行される
+#   未実装         — 宣言のみ。呼び出すとコンパイルエラー (E312)
+#
+# A, B は標準ライブラリ内部の型変数 (ユーザー定義ジェネリクスではない)。
+# 入力型をカンマで並べた宣言は複数引数の組み込み式を表す。
+#
+# 次の2つは R ではなく言語組み込み式のため、このファイルには現れない:
+#   std.empty<T>  — 空リスト構築 (型引数必須)
+#   at list index — リストの添字参照
+
+# ---- console ----
+
+# ビルトイン実装
+R print text
+  Text > Void
+
+# ビルトイン実装
+R printLine text
+  Text > Void
+
+# ビルトイン実装
+R readText
+  Void > Text ! Error
+
+# ビルトイン実装
+R debug value
+  A > Void
+
+# ---- list ----
+
+# ビルトイン実装
+R isEmpty values
+  List<A> > Bool
+
+# ビルトイン実装
+R first values
+  List<A> > A ! Error
+
+# ビルトイン実装
+R rest values
+  List<A> > List<A> ! Error
+
+# ビルトイン実装
+R prepend value values
+  A, List<A> > List<A>
+
+# ビルトイン実装
+R length values
+  List<A> > Int
+
+# ビルトイン実装
+R reverse values
+  List<A> > List<A>
+
+# ビルトイン実装
+R append left right
+  List<A>, List<A> > List<A>
+
+# ビルトイン実装 (A に == が定義されている場合のみ)
+R contains value values
+  A, List<A> > Bool
+
+# ビルトイン実装
+R sumInt values
+  List<Int> > Int
+
+# ビルトイン実装
+R sumDecimal values
+  List<Decimal> > Decimal
+
+# ---- range ----
+
+# 入力レコード (組み込み定義の再掲)
+T RangeInput {
+  first Int
+  last  Int
+}
+
+# ビルトイン実装
+R inclusive input
+  RangeInput > List<Int> ! Error
+
+# ビルトイン実装
+R exclusive input
+  RangeInput > List<Int> ! Error
+
+# ---- format ----
+
+# ビルトイン実装
+R int value
+  Int > Text
+
+# ビルトイン実装
+R decimal value
+  Decimal > Text
+
+# ビルトイン実装
+R bool value
+  Bool > Text
+
+# ビルトイン実装
+R intList values
+  List<Int> > Text
+
+# ビルトイン実装
+R decimalList values
+  List<Decimal> > Text
+
+# ビルトイン実装
+R textList values
+  List<Text> > Text
+
+# ---- text ----
+
+# ビルトイン実装 (std.text.length)
+R textLength text
+  Text > Int
+
+# ビルトイン実装
+R trim text
+  Text > Text
+
+# ビルトイン実装
+R lower text
+  Text > Text
+
+# ビルトイン実装
+R upper text
+  Text > Text
+
+# ビルトイン実装
+R concat left right
+  Text, Text > Text
+
+# ビルトイン実装
+R textContains text part
+  Text, Text > Bool
+
+# ビルトイン実装
+R parseInt text
+  Text > Int ! Error
+
+# ビルトイン実装
+R parseDecimal text
+  Text > Decimal ! Error
+
+# ---- number ----
+
+# ビルトイン実装
+R toDecimal value
+  Int > Decimal
+
+# ビルトイン実装
+R floor value
+  Decimal > Int
+
+# ビルトイン実装
+R round value
+  Decimal > Int
+
+# ビルトイン実装
+R absInt value
+  Int > Int
+
+# ビルトイン実装
+R absDecimal value
+  Decimal > Decimal
+
+# ---- validate ----
+
+# ビルトイン実装
+R require condition
+  Bool > Void ! Error
+
+# ビルトイン実装
+R requireNotEmpty values
+  List<A> > List<A> ! Error
+
+# ---- 将来候補 (宣言のみ) ----
+
+# 未実装
+R sort values
+  List<A> > List<A>
+
+# 未実装
+R take count values
+  Int, List<A> > List<A>
+
+# 未実装
+R drop count values
+  Int, List<A> > List<A>

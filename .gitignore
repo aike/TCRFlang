@@ -1,0 +1,14 @@
+# Rust ビルド生成物 (自動生成される target/lib/std.tcrf などを含む)
+/target
+
+# エディタ・IDE
+.vscode/
+.idea/
+*.swp
+
+# OS が作る不可視ファイル
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+resume.txt

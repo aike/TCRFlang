@@ -1,0 +1,5 @@
+import std
+
+F main
+  Text "Hello, World!"
+  std.printLine
