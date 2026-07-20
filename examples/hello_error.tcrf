@@ -1,13 +1,16 @@
+# どこからも呼ばれていないnoUseの中で型の不整合があっても
+# 実行前の型検査で発見される例
+
 import std
 
 R genNumber
   Void > Int
   Int 100
 
-F nouse
+F noUse
   Void > Void
-  genNumber
-  std.printLine
+  genNumber      # Intを返す
+  std.printLine  # Textを受け取るRにIntを返すRが接続されてエラーとなる
 
 F main
   Text "Hello, World!"

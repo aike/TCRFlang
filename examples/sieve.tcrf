@@ -1,27 +1,25 @@
+# エラトステネスのふるい
+# 「ふるう前の候補列」と「ふるい終えた素数列」を型で区別する例。
+
 import std
 
-T Limit {
-  value Int
-}
+T Candidates [List<Int>]
+T Primes [List<Int>]
 
-T Candidates {
-  values List<Int>
-}
-
-T Primes {
-  values List<Int>
-}
-
+# removeMultiples は「割る数」と「対象リスト」の2つの値が必要なので、
+# 入力レコードにまとめる (R の明示入力は1個という規則のため)
 T FilterInput {
   divisor Int
   values  List<Int>
 }
 
+# 範囲生成 std.inclusive への入力 (std.RangeInput と同じ構造)
 T RangeInput {
   first Int
   last  Int
 }
 
+# values から divisor の倍数を取り除く
 R removeMultiples input
   FilterInput > List<Int> ! Error
 
@@ -36,6 +34,7 @@ R removeMultiples input
       remaining : List<Int> =
         std.rest input.values
 
+      # 残りを先に処理してから、先頭を残すかどうか決める
       filtered : List<Int> =
         removeMultiples FilterInput {
           divisor = input.divisor
@@ -49,21 +48,22 @@ R removeMultiples input
         false
           std.prepend value filtered
 
+# 候補列の先頭を素数として採り、その倍数を除いた残りを再びふるう
 R sieve candidates
   Candidates > Primes ! Error
 
-  when std.isEmpty candidates.values
+  when std.isEmpty candidates
     true
-      Primes {
-        values = std.empty<Int>
-      }
+      # 空の候補列はそのまま空の素数列 (中身は同じ空リストなので from で遷移)
+      Primes from candidates
 
     false
+      # 候補列の先頭は必ず素数
       prime : Int =
-        std.first candidates.values
+        std.first candidates
 
       remaining : List<Int> =
-        std.rest candidates.values
+        std.rest candidates
 
       filtered : List<Int> =
         removeMultiples FilterInput {
@@ -72,36 +72,33 @@ R sieve candidates
         }
 
       restPrimes : Primes =
-        sieve Candidates {
-          values = filtered
-        }
+        sieve (Candidates filtered)
 
-      Primes {
-        values =
-          std.prepend prime restPrimes.values
-      }
+      withPrime : List<Int> =
+        std.prepend prime restPrimes
 
-R findPrimes limit
-  Limit > Primes ! Error
+      Primes withPrime
+
+# 指定範囲の整数列を候補として、ふるいを実行する
+R findPrimes input
+  RangeInput > Primes ! Error
 
   values : List<Int> =
-    std.inclusive RangeInput {
-      first = 2
-      last  = limit.value
-    }
+    std.inclusive input
 
-  sieve Candidates {
-    values = values
-  }
+  sieve (Candidates values)
 
+# 表示用テキストへ整形
 R primesText primes
   Primes > Text
 
-  std.intList primes.values
+  std.intList primes
 
 F main
-  Limit {
-    value = 100
+  # 2〜100 を候補にする
+  RangeInput {
+    first = 2
+    last  = 100
   }
   findPrimes
   primesText

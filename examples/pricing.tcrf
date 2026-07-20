@@ -1,3 +1,5 @@
+# discount.tcrf から呼ばれるユーザーライブラリの例
+
 import std
 
 T Price [Decimal]
