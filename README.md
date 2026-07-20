@@ -9,6 +9,7 @@ TCRF は T (型) / C (定数) / R (変換) / F (接続) の 4 種類の宣言だ
 - `TCRF_language_implementation_spec.md` — 言語仕様 (実装者向け)
 - `TCRF_standard_library_spec.md` — 標準ライブラリ仕様
 - `TCRF_language_introduction.md` — 入門テキスト
+- `TCRF_FAQ.md` — よくある質問
 
 ## 実行環境
 
