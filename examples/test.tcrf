@@ -1,0 +1,17 @@
+# テストフレームワーク
+
+import std
+
+T Test {
+  title Text
+  test Bool
+}
+
+R doTest target
+  Test > Text
+  when target.test
+    true
+      std.concat "--  " target.title
+    false
+      std.concat "NG  " target.title
+

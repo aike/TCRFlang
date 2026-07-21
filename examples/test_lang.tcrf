@@ -1,0 +1,42 @@
+# テストフレームワークを使ったテストの例
+
+import std
+import test as t
+
+R test_add
+  Void > Text
+  actual : Int = 1 + 2
+  expect : Int = 3
+  t.doTest t.Test {
+    title = "Add Test"
+    test = (actual == expect)
+  }
+
+R test_sub
+  Void > Text
+  actual : Int = 3 - 2
+  expect : Int = 1  
+  t.doTest t.Test {
+    title = "Sub Test"
+    test = (actual == expect)
+  }
+
+R test_concat
+  Void > Text
+  actual : Text = std.concat "hello" "world"
+  expect : Text = "helloworld"
+  t.doTest t.Test {
+    title = "Concat Test"
+    test = (actual == expect)
+  }
+
+
+###########################
+
+F main
+  test_add
+  std.printLine
+  test_sub
+  std.printLine
+  test_concat
+  std.printLine
